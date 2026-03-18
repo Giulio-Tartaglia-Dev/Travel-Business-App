@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Nomad Budget & Visa Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+        .loading-spinner {
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-top: 3px solid #4a5568;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .city-card {
+            transition: all 0.3s ease;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .city-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        #map {
+            height: 450px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #f8fafc;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .budget-bar {
+            background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
+        }
+        .budget-bar.warning {
+            background: linear-gradient(90deg, #ed8936 0%, #dd6b20 100%);
+        }
+        .budget-bar.danger {
+            background: linear-gradient(90deg, #f56565 0%, #e53e3e 100%);
+        }
+        .quality-excellent { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); }
+        .quality-good { background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); }
+        .quality-average { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); }
+        .scrollable-map {
+            max-height: 450px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e0 #f7fafc;
+        }
+        .scrollable-map::-webkit-scrollbar {
+            width: 8px;
+        }
+        .scrollable-map::-webkit-scrollbar-track {
+            background: #f7fafc;
+            border-radius: 4px;
+        }
+        .scrollable-map::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+        }
+        .scrollable-map::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="glass-effect shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-globe-americas text-3xl text-gray-700"></i>
+                    <h1 class="text-2xl font-bold text-gray-800">Digital Nomad Planner</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-600 font-medium">Budget & Visa Planning Made Simple</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Input Section -->
+        <section class="mb-8">
+            <div class="glass-effect rounded-2xl shadow-xl p-8">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">
+                    <i class="fas fa-search mr-3 text-gray-600"></i>
+                    Find Your Perfect Destination
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold text-lg mb-3">
+                            <i class="fas fa-home mr-2 text-gray-500"></i> Home Country
+                        </label>
+                        <select id="homeCountry" class="w-full px-4 py-4 bg-white border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all text-lg">
+                            <option value="">Select your home country...</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold text-lg mb-3">
+                            <i class="fas fa-dollar-sign mr-2 text-gray-500"></i> Monthly Budget (USD)
+                        </label>
+                        <input type="number" id="monthlyBudget" placeholder="Enter your monthly budget..." 
+                               class="w-full px-4 py-4 bg-white border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all text-lg"
+                               min="500" step="100">
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex justify-center">
+                    <button id="searchBtn" class="btn-primary text-white px-8 py-3 rounded-xl font-semibold text-lg hover:shadow-lg transition-all">
+                        <i class="fas fa-search mr-2"></i>
+                        Find Destinations
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <section id="loadingState" class="hidden">
+            <div class="flex flex-col items-center justify-center py-16">
+                <div class="loading-spinner mb-6"></div>
+                <p class="text-gray-700 text-xl font-semibold">Finding perfect destinations for you...</p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="hidden">
+            <!-- Map Section -->
+            <div class="glass-effect rounded-2xl shadow-xl p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">
+                    <i class="fas fa-map-marked-alt mr-2 text-gray-600"></i>
+                    Destination Map
+                </h3>
+                <div id="map" class="scrollable-map"></div>
+            </div>
+
+            <!-- Cities Grid -->
+            <div class="mb-6">
+                <h3 class="text-xl font-bold mb-6 text-gray-800">
+                    <i class="fas fa-city mr-2 text-gray-600"></i>
+                    Recommended Cities
+                </h3>
+                <div id="citiesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- City cards will be inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Section -->
+        <section id="errorSection" class="hidden">
+            <div class="glass-effect rounded-2xl shadow-xl p-8 text-center">
+                <i class="fas fa-exclamation-triangle text-5xl text-yellow-500 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2 text-gray-800">Something went wrong</h3>
+                <p id="errorMessage" class="text-gray-600"></p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-dark mt-12 py-6">
+        <div class="container mx-auto px-4 text-center text-gray-600">
+            <p class="text-lg font-medium">&copy; 2024 Digital Nomad Planner.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

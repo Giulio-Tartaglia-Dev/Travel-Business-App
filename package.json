@@ -1,0 +1,17 @@
+{
+  "name": "digital-nomad-planner",
+  "version": "1.0.0",
+  "description": "Digital Nomad Budget & Visa Planner",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.4.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32"
+  }
+}
