@@ -3,7 +3,7 @@
 Una web application avanzata progettata per aiutare i nomadi digitali a pianificare i propri viaggi in base al budget mensile e ai requisiti di visto, incrociando dati in tempo reale da diverse fonti.
 
 ## 🚀 Live Demo
-[Prova l'applicazione qui](https://Giulio-Tartaglia-Dev.github.io/digital-nomad-planner/) *(Assicurati che il nome della repo coincida)*
+[Prova l'applicazione qui](https://Giulio-Tartaglia-Dev.github.io/Travel-Business-App/) 
 
 ## 🛠️ Caratteristiche Tecniche
 * **Integrazione API**: Recupero dinamico dei dati globali tramite l'API `restcountries.com` (valute, lingue, fusi orari).
@@ -27,5 +27,3 @@ Per testare il progetto sul tuo computer:
 2. Assicurati di avere Python installato.
 3. Esegui il comando: `npm start` (avvierà un server locale sulla porta 8000).
 
----
-*Progetto sviluppato da **Giulio Tartaglia** - Studente di Ingegneria Informatica.*
