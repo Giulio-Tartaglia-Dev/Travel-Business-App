@@ -3,7 +3,7 @@
 Una web application avanzata progettata per aiutare i nomadi digitali a pianificare i propri viaggi in base al budget mensile e ai requisiti di visto, incrociando dati in tempo reale da diverse fonti.
 
 ## 🚀 Live Demo
-[Prova l'applicazione qui](https://Giulio-Tartaglia-Dev.github.io/Travel-Business-App/) 
+Visualizza il progetto dal vivo:[Prova l'applicazione qui](https://Giulio-Tartaglia-Dev.github.io/Travel-Business-App/) 
 
 ## 🛠️ Caratteristiche Tecniche
 * **Integrazione API**: Recupero dinamico dei dati globali tramite l'API `restcountries.com` (valute, lingue, fusi orari).
