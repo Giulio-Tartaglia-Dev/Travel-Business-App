@@ -27,3 +27,6 @@ Per testare il progetto sul tuo computer:
 2. Assicurati di avere Python installato.
 3. Esegui il comando: `npm start` (avvierà un server locale sulla porta 8000).
 
+---
+
+*Progetto realizzato da [Giulio Tartaglia](https://github.com/Giulio-Tartaglia-Dev)*
