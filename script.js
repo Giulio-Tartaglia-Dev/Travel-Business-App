@@ -80,21 +80,21 @@ class DigitalNomadPlanner {
 
     async loadAllCitiesData() {
         try {
-            // Load cities from multiple sources for comprehensive coverage
+           
             const [teleportCities, geonamesCities, restCities] = await Promise.allSettled([
                 this.loadTeleportCities(),
                 this.loadGeonamesCities(),
                 this.loadRestWorldCities()
             ]);
 
-            // Combine all cities
+         
             this.allCities = [
                 ...(teleportCities.status === 'fulfilled' ? teleportCities.value : []),
                 ...(geonamesCities.status === 'fulfilled' ? geonamesCities.value : []),
                 ...(restCities.status === 'fulfilled' ? restCities.value : [])
             ];
 
-            // Remove duplicates and sort
+          
             this.allCities = this.removeDuplicateCities(this.allCities);
             
             if (this.allCities.length === 0) {
@@ -160,7 +160,7 @@ class DigitalNomadPlanner {
 
     async loadGeonamesCities() {
         try {
-            // Using a public geonames API for major cities
+           
             const cities = [
                 { name: 'New York', country: 'United States', lat: 40.7128, lng: -74.0060 },
                 { name: 'Los Angeles', country: 'United States', lat: 34.0522, lng: -118.2437 },
@@ -202,7 +202,7 @@ class DigitalNomadPlanner {
 
     async loadRestWorldCities() {
         try {
-            // Additional major world cities
+            
             const cities = [
                 { name: 'Cairo', country: 'Egypt', lat: 30.0444, lng: 31.2357 },
                 { name: 'Lagos', country: 'Nigeria', lat: 6.5244, lng: 3.3792 },
@@ -255,7 +255,7 @@ class DigitalNomadPlanner {
     }
 
     estimateCostByCity(cityName, country) {
-        // Cost estimation based on city and country
+      
         const costMap = {
             'New York': 3500, 'San Francisco': 3200, 'Los Angeles': 2800, 'Chicago': 2200,
             'Toronto': 2400, 'Vancouver': 2600, 'Montreal': 1800,
@@ -271,7 +271,7 @@ class DigitalNomadPlanner {
             'Moscow': 1200, 'Istanbul': 1000, 'Tel Aviv': 2000
         };
         
-        return costMap[cityName] || 1500; // Default estimate
+        return costMap[cityName] || 1500; 
     }
 
     estimateQualityByCity(cityName) {
@@ -290,7 +290,7 @@ class DigitalNomadPlanner {
             'Moscow': 7.0, 'Istanbul': 7.1, 'Tel Aviv': 7.8
         };
         
-        return qualityMap[cityName] || 7.0; // Default quality
+        return qualityMap[cityName] || 7.0; 
     }
     
     calculateAverageSalary(salariesData) {
@@ -425,7 +425,7 @@ class DigitalNomadPlanner {
     }
     
     loadFallbackData() {
-        // Fallback data if API fails
+       
         this.cities = [
             {
                 name: 'Bangkok',
@@ -818,5 +818,5 @@ class DigitalNomadPlanner {
     }
 }
 
-// Initialize the application
+
 const planner = new DigitalNomadPlanner();
